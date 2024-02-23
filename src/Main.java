@@ -1,150 +1,140 @@
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
+import animals.*;
+import data.*;
+import exception.AnimalNotSupported;
+import factory.AnimalFactory;
+
 public class Main {
-    static ArrayList<Animal> animals = new ArrayList<>();
+    static List<Animal> animals = new ArrayList<>();
+    static String name = "", color = "";
+    static int age = 0;
+    static double weight = 0;
+    static Animal cat, dog, duck;
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+    static Scanner scanner = new Scanner(System.in);
 
+    public static void main(String[] args) throws AnimalNotSupported {
         boolean flagAnswer = true;
-        do {
-            System.out.print("Что вы хотите сделать: add/list/exit: ");
-            String answerOperation = scanner.nextLine();
+        while (true) {
+            System.out.print(displayInputMenu());//приглашение к вводу команд
+            String answerOperation = scanner.nextLine(); // считали команду
             answerOperation = answerOperation.toUpperCase(Locale.ROOT).trim();
-            switch (InputMenu.valueOf(answerOperation)) {
+            if (!verifyCommand(answerOperation.toUpperCase(Locale.ROOT))) {//проверили команду
+                System.out.println(String.format("Команда \"%s\" не верна. Повторите еще раз", answerOperation));
+                continue;//повторили запрос на ввод команды
+            }
+
+            switch (InputMenu.valueOf(answerOperation)) {//если команда валидная - продолжаем
                 case ADD:
-                    addAnimal();
-                    flagAnswer = true;
-                    break;
-                case LIST:
-                    flagAnswer = true;
-                    if (animals.size() == 0) {
-                        System.out.println("Список животных пуст. ");
+                    if (addList()) {
+                        break;
                     } else {
-                        for (Animal animal : animals) {
-                            System.out.println(animal.toString());
-                        }
+                        continue;
                     }
+                case LIST:
+                    printList();
                     break;
                 case EXIT:
-                    flagAnswer = false;
-                    System.out.println("<- Exit");
-                    break;
-                default:
-                    System.out.println("Не верная команда. Повторите еще раз");
-                    break;
+                    System.out.println("До свидания!");
+                    System.exit(0);
             }
-        } while (flagAnswer);
+        }
     }
 
-    public static void addAnimal() {
-        String name="", color="";
-        int age=0;
-        double weight=0;
-        Animal cat, dog, duck;
+    private static boolean addList() throws AnimalNotSupported {
+        System.out.print(displayAnimal());
+        String answerAnimal = scanner.nextLine(); // считали животное
+        answerAnimal = answerAnimal.toUpperCase(Locale.ROOT).trim();
+        if (!verifyAnimal(answerAnimal.toUpperCase(Locale.ROOT))) {//проверили животное
+            System.out.println(String.format("Животное \"%s\" выбрано не верно. Повторите еще раз", answerAnimal));
+            return false;//повторили запрос на ввод команды
+        }
 
-        //System.out.print("Какое животное вы хотите добавить (cat/dog/duck) или вернитесь назад (back): ");
-        System.out.print("Какое животное вы хотите добавить (cat/dog/duck): ");
         Scanner animalType = new Scanner(System.in);
-        String answerType = animalType.nextLine();
-        answerType = answerType.toLowerCase(Locale.ROOT).trim();
+        System.out.print("Введите имя: ");
+        name = animalType.nextLine().toLowerCase(Locale.ROOT).trim();
 
-        if (answerType.equals("cat") || answerType.equals("dog")|| answerType.equals("duck")) {
-            System.out.print("Введите имя: ");
-            name = animalType.nextLine().toLowerCase(Locale.ROOT).trim();
+        System.out.print("Введите цвет:");
+        color = animalType.nextLine().toLowerCase(Locale.ROOT).trim();
 
-            System.out.print("Введите цвет:");
-            color = animalType.nextLine().toLowerCase(Locale.ROOT).trim();
+        System.out.print("Введите возраст: ");
 
-            System.out.print("Введите возраст: ");
+        if (animalType.hasNextInt()) {
             age = animalType.nextInt();
-            //animalType.nextLine();
+            if (age < 0) {
+                System.out.println("Не корректный возраст!");
+                return false;
+            }
+        } else {
+            System.out.println("Ошибка ввода!");
+            return false;
+        }
 
-            System.out.print("Введите вес:");
+        System.out.print("Введите вес: ");
+        if (animalType.hasNextDouble()) {
             weight = animalType.nextDouble();
+            if (weight < 0) {
+                System.out.println("Не корректный вес!");
+                return false;
+            }
+        } else {
+            System.out.println("Ошибка ввода!");
+            return false;
         }
+        //------------------------------------
+        AnimalData animalData = AnimalData.valueOf(answerAnimal);
+        Animal animalObject = new AnimalFactory().create(animalData, name, age, weight, color);
+        animals.add(animalObject);
+        return true;
+    }
 
-        switch (answerType) {
-            case "cat":
-                cat = new Cat(name, age, weight, color);
-                animals.add(cat);
-                cat.Say();
-                break;
-            case "dog":
-                dog = new Dog(name, age, weight, color);
-                animals.add(dog);
-                dog.Say();
-                break;
-            case "duck":
-                duck = new Duck(name, age, weight, color);
-                animals.add(duck);
-                duck.Say();
-                break;
-            /*case "back":
-                System.out.println("Back <-");
-                break;*/
-            default:
-                System.out.println("Back <-");
-                break;
+    private static void printList() {
+        if (animals.size() == 0) {
+            System.out.println("Список животных пуст. ");
+        } else {
+            System.out.println("Список животных: ");
+            for (Animal animal : animals) {//toString()
+                System.out.println(animal.toString());
+            }
         }
+    }
+    private static boolean verifyCommand(String input) {
+        InputMenu[] inputMenu = InputMenu.values();
+        for (int i = 0; i < InputMenu.values().length; i++) {
+            if (input.equals(inputMenu[i].name())) {
+                return true;
+            }
+        }
+        return false;
+    }
+    private static boolean verifyAnimal(String animal) {
+        AnimalData[] animalData = AnimalData.values();
+        for (int i = 0; i < AnimalData.values().length; i++) {
+            if (animal.equals(animalData[i].name())) {
+                return true;
+            }
+        }
+        return false;
+    }
+    private static String displayInputMenu() {
+        InputMenu[] inputMenu = InputMenu.values();
+        String[] listInputMenu = new String[InputMenu.values().length];
+        for (int i = 0; i < listInputMenu.length; i++) {
+            listInputMenu[i] = inputMenu[i].name().toUpperCase();
+        }
+        return String.format("Что вы хотите сделать %s: ", String.join("/", listInputMenu));
+    }
+    private static String displayAnimal() {
+        AnimalData[] animalData = AnimalData.values();
+        String[] listAnimal = new String[AnimalData.values().length];
+        for (int i = 0; i < listAnimal.length; i++) {
+            listAnimal[i] = animalData[i].name().toUpperCase();
+        }
+        return String.format("Какое животное вы хотите добавить: %s ", String.join("/", listAnimal));
     }
 }
 
-    /*static Scanner scanner = new Scanner(System.in);
-    static int v, t, s, x;
-
-    public static void main(String[] args) {
-        boolean flag = true;
-        do{
-            System.out.print("Что хотите s/t/v/[E]xit: ");
-            String answer = scanner.nextLine();
-            answer = answer.toLowerCase(Locale.ROOT).trim();
-
-            switch (answer){
-                case "s":
-                    getS();
-                    //flag = false;
-                    break;
-                case "v":
-                    //flag = false;
-                    break;
-                case "t":
-                    //flag = false;
-                    break;
-                case "e":
-                    System.out.print("The end");
-                    flag = false;
-                    break;
-                default:
-                    //flag = true;
-                    break;
-            }
-        }while(flag);
-    }
-
-    public static void getS() {
-        do {
-            System.out.println("Введите cкорость >0 в км/ч:");
-            v = scanner.nextInt();
-        } while (v <= 0);
-        /*while(v <= 0){
-            System.out.println("Скорость ");
-            v= scanner.nextInt();
-        }
-        do {
-            System.out.println("Введит время >0 в ч:");
-            t = scanner.nextInt();
-        } while (t <= 0);
-        /*while(t <0){
-            System.out.println("Время ");
-            t= scanner.nextInt();
-        }
-        s = v * t;
-        System.out.println("s = v*t");
-        System.out.println("s = " + v + "*" + t);
-        System.out.println("s = " + s);
-    }*/

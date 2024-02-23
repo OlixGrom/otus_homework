@@ -1,4 +1,6 @@
-public class Animal {
+package animals;
+
+public abstract class Animal {
     //Свойства
     private String name;
     private int age;
@@ -12,7 +14,7 @@ public class Animal {
         setColor(color);
     }
 
-    /*public Animal() {
+    /*public animals.Animal() {
 
     }*/
 
@@ -51,26 +53,45 @@ public class Animal {
 
 
     //Методы
-    public void Say() {
+    public void say() {
         System.out.println("Я говорю");
     }
 
-    public void Go() {
+    public void go() {
         System.out.println("Я иду");
     }
 
-    public void Drink() {
+    public void drink() {
         System.out.println("Я пью");
     }
 
-    public void Eat() {
+    public void eat() {
         System.out.println("Я ем");
     }
 
     @Override
     public String toString() {
-        String yearStr = (age == 1) ? "год" : ((age >= 2 && age <= 4) ? "года" : "лет");
-        return "Привет! меня зовут " + getName() + ", мне " + getAge() + " " + yearStr +
-                ", я вешу - " + getWeight() + " кг, мой цвет - " + getColor();
+        return  String.format("Привет! меня зовут %s, мне %d %s , я вешу - %.3f кг, мой цвет - %s",name,age,getYearStr(),weight,color);
+    }
+    private String getYearStr (){
+        int ostatok = age%10;
+
+        if (age >= 11 && age <= 14){
+            return "лет";
+        }
+
+        if (ostatok == 1){
+            return "год";
+        }
+
+        if (ostatok >= 5){
+            return "лет";
+        }
+
+        if (ostatok >= 2){
+            return "года";
+        }
+
+        return "лет";
     }
 }

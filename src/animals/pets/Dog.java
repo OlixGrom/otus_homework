@@ -1,9 +1,13 @@
-public class Dog extends Animal{
+package animals.pets;
+
+import animals.Animal;
+
+public class Dog extends Animal {
     public Dog(String name, int age, double weight, String color) {
         super(name,age,weight,color);
     }
     @Override
-    public void Say() {
+    public void say() {
         System.out.println("Гав");
     }
 }
