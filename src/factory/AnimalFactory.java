@@ -24,6 +24,4 @@ public class AnimalFactory {
         }
         throw new AnimalNotSupported(animalData);
     }
-
-
 }
