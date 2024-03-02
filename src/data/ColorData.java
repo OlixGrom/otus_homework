@@ -1,5 +1,5 @@
 package data;
 
-public enum ColorDara {
+public enum ColorData {
     WHITE, BLACK,GRAY,RED, ORANGE,YELLOW,GREEN,LIGHT, BLUE, PURPLE;
 }

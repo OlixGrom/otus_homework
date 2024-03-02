@@ -11,17 +11,14 @@ public class AnimalFactory {
         switch(animalData){
             case DUCK:{
                 Duck duck = new Duck( name,  age,  weight,  color );
-                duck.say();
                 return duck;
             }
             case DOG:{
                 Dog dog = new Dog( name,  age,  weight,  color);
-                dog.say();
                 return dog;
             }
             case CAT:{
                 Cat cat = new Cat( name,  age,  weight,  color);
-                cat.say();
                 return cat;
             }
         }
