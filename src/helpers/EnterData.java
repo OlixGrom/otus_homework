@@ -7,8 +7,8 @@ import java.util.Locale;
 import java.util.Scanner;
 
 public class EnterData {
-    String tmpStr;
-    Scanner scanner;
+    private String tmpStr;
+    private Scanner scanner;
 
     public EnterData(Scanner scanner) {
         this.scanner = scanner;

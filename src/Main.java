@@ -12,12 +12,11 @@ import java.util.Locale;
 import java.util.Scanner;
 
 public class Main {
-    static List<Animal> animals = new ArrayList<>();
+    static private List<Animal> animals = new ArrayList<>();
 
     public static void main(String[] args) throws AnimalNotSupported {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            //System.out.println(DisplayEnum.displayListEnum(InputMenu.class));
             System.out.print(String.format("Введите команду %s: ", DisplayEnum.displayListEnum(InputMenu.class)));
             String answerOperation = scanner.nextLine();
             answerOperation = answerOperation.toUpperCase(Locale.ROOT).trim();
@@ -28,11 +27,8 @@ public class Main {
 
             switch (InputMenu.valueOf(answerOperation)) {
                 case ADD:
-                    if (addList()) {
-                        break;
-                    } else {
-                        continue;
-                    }
+                    addList();
+                    break;
                 case LIST:
                     PrintList.print(animals);
                     break;
@@ -44,7 +40,6 @@ public class Main {
     }
 
     private static boolean addList() throws AnimalNotSupported {
-        //Scanner scanner = new Scanner(System.in);
         String name = "", color = "", tmpStr, typeAnimal;
         int age = 0;
         double weight = 0;

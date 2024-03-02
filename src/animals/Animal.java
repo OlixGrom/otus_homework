@@ -14,10 +14,6 @@ public abstract class Animal {
         setColor(color);
     }
 
-    /*public animals.Animal() {
-
-    }*/
-
     //геттеры и сеттеры
     public String getName() {
         return name;

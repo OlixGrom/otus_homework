@@ -1,5 +1,4 @@
 package data;
 
-public enum   InputMenu {
-    ADD,LIST,EXIT;
+public enum   InputMenu {    ADD,LIST,EXIT;
 }
