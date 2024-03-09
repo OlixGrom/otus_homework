@@ -10,16 +10,13 @@ public class AnimalFactory {
     public Animal create(AnimalData animalData, String name, int age, double weight, String color) throws AnimalNotSupported {
         switch(animalData){
             case DUCK:{
-                Duck duck = new Duck( name,  age,  weight,  color );
-                return duck;
+                return new Duck( name,  age,  weight,  color );
             }
             case DOG:{
-                Dog dog = new Dog( name,  age,  weight,  color);
-                return dog;
+                return new Dog( name,  age,  weight,  color);
             }
             case CAT:{
-                Cat cat = new Cat( name,  age,  weight,  color);
-                return cat;
+                return new Cat( name,  age,  weight,  color);
             }
         }
         throw new AnimalNotSupported(animalData);

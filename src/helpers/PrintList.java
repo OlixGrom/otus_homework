@@ -5,7 +5,7 @@ import animals.Animal;
 import java.util.List;
 
 public class PrintList {
-    public static void print(List<Animal> animals) {
+    public void print(List<Animal> animals) {
         if (animals.size() == 0) {
             System.out.println("Список животных пуст. ");
         } else {

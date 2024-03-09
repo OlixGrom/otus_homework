@@ -4,7 +4,7 @@ import data.AnimalData;
 import data.InputMenu;
 
 public class DisplayEnum {
-    public static <T extends Enum<T>> String displayListEnum(Class<T> enumType){
+    public <T extends Enum<T>> String displayListEnum(Class<T> enumType){
         T[] tmpEnum = enumType.getEnumConstants();
 
         String[] list = new String[tmpEnum.length];

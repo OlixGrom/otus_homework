@@ -8,10 +8,10 @@ public abstract class Animal {
     private String color;
 
     public Animal(String name, int age, double weight, String color) {
-        setName(name);
-        setAge(age);
-        setWeight(weight);
-        setColor(color);
+        this.name = name;
+        this.age = age;
+        this.weight = weight;
+        this.color = color;
     }
 
     //геттеры и сеттеры
